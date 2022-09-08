@@ -6,15 +6,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 var jwt = require('jsonwebtoken');
 var token_sig = 'pjezfpjajfajeipjfez4845as5';
-
 // --- /Multer ----
-
-
-
-
-
-
-
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: 3333 });
 
@@ -53,7 +45,7 @@ MongoClient.connect(url)
 
     wss.on('connection', (socket) => {// traitement si un client connect sur le serveur
       socket.on('message', (msg) => {// traitement à la reception d'un message
-        
+
         const msg1 = JSON.parse(msg);
         free = parseInt(msg1.free)
         date_D = new Date();
@@ -63,57 +55,55 @@ MongoClient.connect(url)
         date.hours = date_D.getHours();
         date.year = date_D.getFullYear();
         date.month = date_D.getMonth() + 1;
-        date.day = date_D.getDate();       
-        if(msg1.type === "in" && msg1.free < msg1.spots)
-        {
-        msg1.free = free + 1 ; 
-        date.free = msg1.free;
-        db.collection("parking").updateOne({ "_id": ObjectId(msg1._id) }, {
-          $set: {
-             "free": msg1.free,
-          },
-          $push: { "history_in": date }
+        date.day = date_D.getDate();
+        if (msg1.type === "in" && msg1.free < msg1.spots) {
+          msg1.free = free + 1;
+          date.free = msg1.free;
+          db.collection("parking").updateOne({ "_id": ObjectId(msg1._id) }, {
+            $set: {
+              "free": msg1.free,
+            },
+            $push: { "history_in": date }
 
-        }, (insertOne_err, insertOne_res) => {
-          if (insertOne_err) {
-            console.log(insertOne_err);
-            //res.json({ msg: 'Uknown problem' });
-          } else {
-            //res.json({ msg: '0' });
-            console.log(msg1.title + " ==> updated")
-          }
-        });
-      }
-        else if ( msg1.type === "out" && msg1.free > 0)
-        {
-        msg1.free = free - 1 ;
-        date.free = msg1.free;
-        db.collection("parking").updateOne({ "_id": ObjectId(msg1._id) }, {
-          $set: {
-             "free": msg1.free,
-          },
-          $push: { "history_out": date }
+          }, (insertOne_err, insertOne_res) => {
+            if (insertOne_err) {
+              console.log(insertOne_err);
+              //res.json({ msg: 'Uknown problem' });
+            } else {
+              //res.json({ msg: '0' });
+              console.log(msg1.title + " ==> updated")
+            }
+          });
+        }
+        else if (msg1.type === "out" && msg1.free > 0) {
+          msg1.free = free - 1;
+          date.free = msg1.free;
+          db.collection("parking").updateOne({ "_id": ObjectId(msg1._id) }, {
+            $set: {
+              "free": msg1.free,
+            },
+            $push: { "history_out": date }
 
-        }, (insertOne_err, insertOne_res) => {
-          if (insertOne_err) {
-            console.log(insertOne_err);
-            //res.json({ msg: 'Uknown problem' });
-          } else {
-            //res.json({ msg: '0' });
-            console.log(msg1.title + " ==> updated")
-          }
-        });
-      }
-        console.log( "free ==> " + msg1.free ); 
-        wss.clients.forEach(function each(client) {    
+          }, (insertOne_err, insertOne_res) => {
+            if (insertOne_err) {
+              console.log(insertOne_err);
+              //res.json({ msg: 'Uknown problem' });
+            } else {
+              //res.json({ msg: '0' });
+              console.log(msg1.title + " ==> updated")
+            }
+          });
+        }
+        console.log("free ==> " + msg1.free);
+        wss.clients.forEach(function each(client) {
           if (client.readyState == 1) {
-            client.send(JSON.stringify (msg1)); // l'envoie de la modification à tous les clients
+            client.send(JSON.stringify(msg1)); // l'envoie de la modification à tous les clients
           }
         });
-    
+
       });
-    
-    
+
+
     });
 
 
@@ -132,11 +122,11 @@ MongoClient.connect(url)
       coordinate = {}
       coordinate.latitude = parseFloat(req.body.Lat);
       coordinate.longitude = parseFloat(req.body.Long);
-      client.id = 1 ; 
+      client.id = 1;
       db.collection("parking").find().sort({ "id": -1 }).limit(1).toArray(async (err, parking) => {
-         client.id = parking[0].id + 1;
+        client.id = parking[0].id + 1;
       })
-      client.id = client.id ; 
+      client.id = client.id;
       client.history_in = [];
       client.history_out = [];
       client.title = req.body.name;
@@ -189,7 +179,7 @@ MongoClient.connect(url)
         $set: {
           "title": client.title,
           "spots": client.spots, "free": client.free, "coordinate": client.coordinate,
-          "description": client.description,"type":client.type
+          "description": client.description, "type": client.type
         }
       }, (insertOne_err, insertOne_res) => {
         if (insertOne_err) {
@@ -273,12 +263,6 @@ MongoClient.connect(url)
     });
     app.post('/Parking/get', (req, res) => {
 
-      /*
-        curl
-          -X POST 
-          -d 'token=lora17@yml.fr'
-          http://localhost:3000/users/profile
-      */
 
       parkings = []
       console.log("here get parkings")
@@ -293,30 +277,17 @@ MongoClient.connect(url)
     });
     app.post('/Parking/get_capteur', (req, res) => {
 
-      /*
-        curl
-          -X POST 
-          -d 'token=lora17@yml.fr'
-          http://localhost:3000/users/profile
-      */
-
       parkings = []
       console.log("here get parkings")
 
-        db.collection("parking").find({}).toArray(async (err, parking) => {
-          res.json({ parking: parking });
-        })
+      db.collection("parking").find({}).toArray(async (err, parking) => {
+        res.json({ parking: parking });
+      })
 
 
     });
     app.post('/User/get', (req, res) => {
 
-      /*
-        curl
-          -X POST 
-          -d 'token=lora17@yml.fr'
-          http://localhost:3000/users/profile
-      */
 
       parkings = []
       console.log("here get Users")
@@ -330,12 +301,6 @@ MongoClient.connect(url)
     });
     app.post('/Statistics/get', (req, res) => {
 
-      /*
-        curl
-          -X POST 
-          -d 'token=lora17@yml.fr'
-          http://localhost:3000/users/profile
-      */
 
       parking_stat = {};
       console.log("here get stat")
@@ -358,7 +323,7 @@ MongoClient.connect(url)
             first_date.secondes)
           second_date_date = new Date(second_date.year, second_date.month, second_date.day, second_date.hours, second_date.minutes,
             second_date.secondes)
-          parking_stat.total = parseInt( parking_stat.spots )*(second_date_date.getTime() - first_date_date.getTime())/1000;
+          parking_stat.total = parseInt(parking_stat.spots) * (second_date_date.getTime() - first_date_date.getTime()) / 1000;
           for (const key_in in element_in) {
             tmp_date_in = new Date(element_in[key_in].year, element_in[key_in].month, element_in[key_in].day, element_in[key_in].hours, element_in[key_in].minutes,
               element_in[key_in].secondes)
@@ -377,7 +342,7 @@ MongoClient.connect(url)
                 if (tmp_date_out.getTime() - tmp_date_in.getTime() > 0) {
                   diff = (tmp_date_out.getTime() - tmp_date_in.getTime()) / 1000;
                   parking_stat.total_ooccuped += diff;
-                  console.log(" diff ==  "+diff)
+                  console.log(" diff ==  " + diff)
                   object_1 = {};
                   object_1.id = tmp_date_out;
                   object_1.free = element_out[key_out].free;
@@ -408,7 +373,7 @@ MongoClient.connect(url)
 
                 if (tmp_date_out.getTime() - tmp_date_in.getTime() > 0) {
                   diff = (tmp_date_out.getTime() - tmp_date_in.getTime()) / 1000;
-                  console.log(" diff ==  "+diff)
+                  console.log(" diff ==  " + diff)
                   parking_stat.total_ooccuped += diff;
                   object_1 = {};
                   object_1.id = tmp_date_out;
@@ -425,30 +390,29 @@ MongoClient.connect(url)
           }
           parking_stat.free_history.sort(function (a, b) {
             return a.id - b.id;
-          });   
-          max_free = 0 ; 
+          });
+          max_free = 0;
           console.log("here");
           for (const key in parking_stat.free_history) {
-            if (max_free <  parseInt (parking_stat.free_history[key].free) )
-            {
-              max_free = parseInt (parking_stat.free_history[key].free);
+            if (max_free < parseInt(parking_stat.free_history[key].free)) {
+              max_free = parseInt(parking_stat.free_history[key].free);
             }
             parking_stat.free_history_free.push(parking_stat.free_history[key].free);
-            if ( key == 0 )
-            parking_stat.free_history_id.push("          "+parking_stat.free_history[key].id.toISOString());
-            else if ( key == parking_stat.free_history.length - 1  )
-            parking_stat.free_history_id.push(parking_stat.free_history[key].id.toISOString()+"                                      ");
-            else 
-            parking_stat.free_history_id.push("");
+            if (key == 0)
+              parking_stat.free_history_id.push("          " + parking_stat.free_history[key].id.toISOString());
+            else if (key == parking_stat.free_history.length - 1)
+              parking_stat.free_history_id.push(parking_stat.free_history[key].id.toISOString() + "                                      ");
+            else
+              parking_stat.free_history_id.push("");
 
           }
-          parking_stat.total_ooccuped += Math.abs(parking_stat.spots  - max_free) * 24 * 3600;
-          console.log( " total occuped ==  " +parking_stat.total_ooccuped)
-          console.log(" total  ==  " +parking_stat.total)
-          parking_stat.pourcentage_occuped = Math.round(parking_stat.total_ooccuped / (parking_stat.total) *100000 ) /1000 ;
-          console.log( " total occuped ==  " + parking_stat.pourcentage_occuped  )
-          if ( parking_stat.pourcentage_occuped > 100 ) parking_stat.pourcentage_occuped  = 100 - ( parking_stat.free/parking_stat.spots  )* 100;
-          else if ( parking_stat.pourcentage_occuped < 0 ) parking_stat.pourcentage_occuped  = 0 
+          parking_stat.total_ooccuped += Math.abs(parking_stat.spots - max_free) * 24 * 3600;
+          console.log(" total occuped ==  " + parking_stat.total_ooccuped)
+          console.log(" total  ==  " + parking_stat.total)
+          parking_stat.pourcentage_occuped = Math.round(parking_stat.total_ooccuped / (parking_stat.total) * 100000) / 1000;
+          console.log(" total occuped ==  " + parking_stat.pourcentage_occuped)
+          if (parking_stat.pourcentage_occuped > 100) parking_stat.pourcentage_occuped = 100 - (parking_stat.free / parking_stat.spots) * 100;
+          else if (parking_stat.pourcentage_occuped < 0) parking_stat.pourcentage_occuped = 0
           res.json({ parking: parking_stat });
         })
 
@@ -457,12 +421,6 @@ MongoClient.connect(url)
     });
     app.post('/Parking/getOne', (req, res) => {
 
-      /*
-        curl
-          -X POST 
-          -d 'token=lora17@yml.fr'
-          http://localhost:3000/users/profile
-      */
 
       parkings = []
       console.log("here getOne parking")
@@ -476,13 +434,6 @@ MongoClient.connect(url)
 
     });
     app.post('/User/getOne', (req, res) => {
-
-      /*
-        curl
-          -X POST 
-          -d 'token=lora17@yml.fr'
-          http://localhost:3000/users/profile
-      */
 
       parkings = []
       console.log("here getOne user")

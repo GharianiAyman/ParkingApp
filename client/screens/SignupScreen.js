@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, Platform, StyleSheet } from 'react-native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import { useNavigation } from '@react-navigation/native';
@@ -14,7 +14,7 @@ async function store_token(value) {
   await SecureStore.setItemAsync('token', value);
 }
 
-const SignupScreen = ({}) => {
+const SignupScreen = ({ }) => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -62,7 +62,7 @@ const SignupScreen = ({}) => {
       />
 
       <Text style={styles.error_msg}>
-        {errorMsg}  
+        {errorMsg}
       </Text>
 
       <FormButton
@@ -71,13 +71,13 @@ const SignupScreen = ({}) => {
 
           setErrorMsg('');
 
-          if(confirmPassword != password){
+          if (confirmPassword != password) {
             setErrorMsg('password doesn\'t matche confirmed password.\n')
             return;
           }
 
           let host_name = await ip_server.get_hostname();
-          let link = 'http://'+host_name+'/users/register';
+          let link = 'http://' + host_name + '/users/register';
 
           /*
           
@@ -96,33 +96,33 @@ const SignupScreen = ({}) => {
                 }
           */
 
-          let data = 'username='+name+'&email='+email+'&password='+password;
+          let data = 'username=' + name + '&email=' + email + '&password=' + password;
 
           let myInit = {
             method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // this line is important, if this content-type is not set it wont work
             body: data
           };
 
           fetch(link, myInit)
-          .then((res)=>{return res.json();})
-          .then(res =>{
+            .then((res) => { return res.json(); })
+            .then(res => {
 
 
-            if(res.msg === '0'){
-              store_token(res.token);
-              navigation.navigate('LoginScreen');
-            }else{
-              setErrorMsg(res.msg);
-            }
+              if (res.msg === '0') {
+                store_token(res.token);
+                navigation.navigate('LoginScreen');
+              } else {
+                setErrorMsg(res.msg);
+              }
 
-          })
-          .catch(err =>{
+            })
+            .catch(err => {
               console.log(err);
-          })
-          .finally(()=>{
+            })
+            .finally(() => {
 
-          });
+            });
         }}
       />
 
@@ -173,10 +173,10 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'grey',
   },
-  error_msg : {
+  error_msg: {
     fontSize: 13,
-    fontWeight : 'bold',
-    color : 'red'
+    fontWeight: 'bold',
+    color: 'red'
   }
 });
 export default SignupScreen;

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import MapView from "react-native-maps";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import * as theme from "../theme";
@@ -10,16 +10,16 @@ const { height, width } = Dimensions.get("screen");
 
 export default class Get_Map extends React.Component {
   state = {
-    active : false, 
-    coordinate : {}
-  }  
-  item = this.props.route.params.item ;
+    active: false,
+    coordinate: {}
+  }
+  item = this.props.route.params.item;
   map_coordinate = {};
-  onMapPress = (e) =>{
-    this.setState( {active : true  } );
-    this.setState({ coordinate : e.nativeEvent.coordinate });
-    this.map_coordinate = e.nativeEvent.coordinate; 
-    } 
+  onMapPress = (e) => {
+    this.setState({ active: true });
+    this.setState({ coordinate: e.nativeEvent.coordinate });
+    this.map_coordinate = e.nativeEvent.coordinate;
+  }
 
 
   renderParking = () => {
@@ -54,73 +54,73 @@ export default class Get_Map extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <MapView
-          mapType = "hybrid"
+          mapType="hybrid"
           style={{ flex: 1 }}
           initialRegion={{
             latitude: 44.80591232649438,
-            longitude:  -0.6054219633020543,
+            longitude: -0.6054219633020543,
             latitudeDelta: 0.00522,
             longitudeDelta: 0.00521
           }}
           onPress={e => this.onMapPress(e)}
-          >
-            { this.state.active ?
-            <View> 
-            <Marker
-            coordinate= {this.state.coordinate}>
+        >
+          {this.state.active ?
+            <View>
+              <Marker
+                coordinate={this.state.coordinate}>
                 <View>
-                  <Ionicons name = "ios-location"
+                  <Ionicons name="ios-location"
                     color="red"
                     size={30}
                   >
                   </Ionicons>
                 </View>
-            </Marker>
+              </Marker>
             </View>
             : <></>
-              
-            }
 
-          </MapView>
-          { this.state.active ? 
-    <TouchableWithoutFeedback
-    >
-      <View style={[styles.parking, styles.shadow]}>
-        <View style={styles.parkingInfoContainer}>
-          <TouchableOpacity
-            style={styles.buy}
-            onPress = {() => {
-              if ( this.item == null )
-              { const map_coordinate = this.map_coordinate ; 
-                const item = this.item;
-                this.props.navigation.navigate('AddParking',{item , map_coordinate});
-              }
-              else
-              {
-                const map_coordinate = this.map_coordinate ; 
-                const item = this.item;
-                this.props.navigation.navigate('UpdateParking',{item , map_coordinate});}
+          }
 
-            }}
+        </MapView>
+        {this.state.active ?
+          <TouchableWithoutFeedback
           >
-            <View style={styles.buyTotal}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={styles.buyTotalPrice}> Valider </Text>
+            <View style={[styles.parking, styles.shadow]}>
+              <View style={styles.parkingInfoContainer}>
+                <TouchableOpacity
+                  style={styles.buy}
+                  onPress={() => {
+                    if (this.item == null) {
+                      const map_coordinate = this.map_coordinate;
+                      const item = this.item;
+                      this.props.navigation.navigate('AddParking', { item, map_coordinate });
+                    }
+                    else {
+                      const map_coordinate = this.map_coordinate;
+                      const item = this.item;
+                      this.props.navigation.navigate('UpdateParking', { item, map_coordinate });
+                    }
+
+                  }}
+                >
+                  <View style={styles.buyTotal}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Text style={styles.buyTotalPrice}> Valider </Text>
+                    </View>
+                  </View>
+                  <View style={styles.buyBtn}>
+                    <FontAwesome
+                      name="angle-right"
+                      size={theme.SIZES.icon * 1.75}
+                      color={theme.COLORS.white}
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.buyBtn}>
-              <FontAwesome
-                name="angle-right"
-                size={theme.SIZES.icon * 1.75}
-                color={theme.COLORS.white}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
-            : <></>
-            }
+          </TouchableWithoutFeedback>
+          : <></>
+        }
       </View>
     );
   }

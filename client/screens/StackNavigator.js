@@ -21,10 +21,10 @@ const StackNavigator = () => {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Charts" component={Charts} />
         <Stack.Screen name="Statistics" component={Statistics} />
-        <Stack.Screen name="AddParking" component={AddParking} />        
-        <Stack.Screen name="Get_Map" component={Get_Map} />        
-        <Stack.Screen name="UpdateParking" component={UpdateParking} />          
-        <Stack.Screen name="UpdateUser" component={UpdateUser} />        
+        <Stack.Screen name="AddParking" component={AddParking} />
+        <Stack.Screen name="Get_Map" component={Get_Map} />
+        <Stack.Screen name="UpdateParking" component={UpdateParking} />
+        <Stack.Screen name="UpdateUser" component={UpdateUser} />
         <Stack.Screen name="User" component={User} />
         <Stack.Screen name="Parking" component={Parking} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />

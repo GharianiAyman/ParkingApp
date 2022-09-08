@@ -1,12 +1,11 @@
 import React from "react";
-import {  useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView} from "react-native";
+import { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
-import demo from '../assets/data/demo.js';
-import {Picker} from "@react-native-picker/picker";
+import { Picker } from "@react-native-picker/picker";
 
 import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
@@ -14,7 +13,7 @@ import * as ip_server from './server_ip';
 import { useRoute } from '@react-navigation/native';
 
 
-async function log_out(){
+async function log_out() {
     await SecureStore.deleteItemAsync('token');
 }
 
@@ -35,9 +34,8 @@ const AddPrking = ({ }) => {
 
     const [saveButtonTitle, setSaveButtonTitle] = useState('Save');
 
-    const [Demo, setData] = useState(demo);
-    var map_coordinate = route.params.map_coordinate ; 
-    const item = null ; 
+    var map_coordinate = route.params.map_coordinate;
+    const item = null;
 
 
 
@@ -46,25 +44,24 @@ const AddPrking = ({ }) => {
 
     const at_start_up = async () => {
 
-        if(first_time === 1){
-            
+        if (first_time === 1) {
+
             first_time = 0;
 
             let token = await SecureStore.getItemAsync('token');
-            if (token) {    
+            if (token) {
                 //console.log(map_coordinate) ; 
-             if (map_coordinate != null )
-             {  
-                setLat( map_coordinate.latitude+"" )
-                setLong( map_coordinate.longitude+"" )
-             }    
-            }else{
+                if (map_coordinate != null) {
+                    setLat(map_coordinate.latitude + "")
+                    setLong(map_coordinate.longitude + "")
+                }
+            } else {
                 first_time = 1;
                 log_out();
                 navigation.navigate('LoginScreen');
             }
         }
-    
+
     }
 
     useFocusEffect(
@@ -78,7 +75,7 @@ const AddPrking = ({ }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.titleBar}>
                     <Ionicons name="ios-arrow-back" size={24} color="#52575D"
-                        onPress={() => {first_time = 1; navigation.goBack();}}
+                        onPress={() => { first_time = 1; navigation.goBack(); }}
                     ></Ionicons>
                 </View>
 
@@ -103,7 +100,7 @@ const AddPrking = ({ }) => {
                         <FormInput
                             labelValue={Lat}
                             onChangeText={(Lat) => setLat(Lat)}
-                            onPress = {  () =>  {first_time = 1; navigation.navigate('Get_Map', { item })}}
+                            onPress={() => { first_time = 1; navigation.navigate('Get_Map', { item }) }}
                             placeholderText="latitude"
                             iconType="enviroment"
                             autoCapitalize="none"
@@ -118,7 +115,7 @@ const AddPrking = ({ }) => {
                             labelValue={Long}
                             onChangeText={(Long) => setLong(Long)}
                             placeholderText="longitude"
-                            onPress = {  () =>  {first_time = 1; navigation.navigate('Get_Map', { item })}}
+                            onPress={() => { first_time = 1; navigation.navigate('Get_Map', { item }) }}
                             iconType="enviroment"
                             autoCapitalize="none"
                             autoCorrect={false}
@@ -143,7 +140,7 @@ const AddPrking = ({ }) => {
                 <View style={{ alignItems: "center" }}>
                     <View style={styles.infoContainer}>
                         <Picker
-                            selectedValue = {type}
+                            selectedValue={type}
                             style={{ height: 50, width: 350 }}
                             onValueChange={
                                 (itemValue, itemIndex) => {
@@ -151,9 +148,9 @@ const AddPrking = ({ }) => {
                                 }
                             }
                         >
-                            <Picker.Item label="Parking relai" value="Parking Relai"/>
-                            <Picker.Item label="Sans pass universitaire" value="Sans pass universitaire"/>
-                            <Picker.Item label="Avec pass universitaire" value="Avec pass universitaire"/>
+                            <Picker.Item label="Parking relai" value="Parking Relai" />
+                            <Picker.Item label="Sans pass universitaire" value="Sans pass universitaire" />
+                            <Picker.Item label="Avec pass universitaire" value="Avec pass universitaire" />
                         </Picker>
                     </View>
                 </View>
@@ -171,7 +168,7 @@ const AddPrking = ({ }) => {
                     </View>
                 </View>
 
-                <Text style={{textAlign : 'center', color : 'red'}}>
+                <Text style={{ textAlign: 'center', color: 'red' }}>
                     {checkMsg}
                 </Text>
 
@@ -179,45 +176,45 @@ const AddPrking = ({ }) => {
                     <View style={styles.infoContainer}>
                         <FormButton
                             buttonTitle={saveButtonTitle}
-                            onPress = {
-                                async ()=>{
+                            onPress={
+                                async () => {
 
                                     if (!username.trim()) {
 
                                         setCheckMsg('Set all information');
-                                        
+
                                         return;
-                                  
-                                      }
-                                      if ( isNaN ( parseFloat(Lat) )) {
+
+                                    }
+                                    if (isNaN(parseFloat(Lat))) {
 
                                         setCheckMsg('Set all information');
-                                  
+
                                         return;
-                                  
-                                      }
-                                      if ( isNaN ( parseFloat(Long) )) {
+
+                                    }
+                                    if (isNaN(parseFloat(Long))) {
 
                                         setCheckMsg('Set all information');
-                                  
+
                                         return;
-                                  
-                                      }
-                                      if (  isNaN ( parseInt(capacite) )  ) {
+
+                                    }
+                                    if (isNaN(parseInt(capacite))) {
 
                                         setCheckMsg('Set all information');
-                                  
+
                                         return;
-                                  
-                                      }
-                                      if (!description.trim()) {
+
+                                    }
+                                    if (!description.trim()) {
 
                                         setCheckMsg('Set all information');
-                                  
+
                                         return;
-                                  
-                                      }
-                                      setSaveButtonTitle('Saving ...');
+
+                                    }
+                                    setSaveButtonTitle('Saving ...');
 
                                     first_time = 1;
 
@@ -225,38 +222,38 @@ const AddPrking = ({ }) => {
                                     if (token) {
 
                                         let host_name = await ip_server.get_hostname();
-                                        let link = 'http://'+host_name+'/Parking/add';
+                                        let link = 'http://' + host_name + '/Parking/add';
 
 
-                                        let data = 'token='+token+'&name='+username+'&Lat='+Lat+'&Long='+Long+ '&capacite='+capacite +'&description='+description+'&type='+type;
+                                        let data = 'token=' + token + '&name=' + username + '&Lat=' + Lat + '&Long=' + Long + '&capacite=' + capacite + '&description=' + description + '&type=' + type;
 
                                         //console.log(data);
 
                                         let myInit = {
                                             method: 'POST',
-                                            headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
+                                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // this line is important, if this content-type is not set it wont work
                                             body: data
                                         };
 
                                         fetch(link, myInit)
-                                        .then((res)=>{return res.json();})
-                                        .then(res =>{
-                                            if(res.msg === '0'){
-                                                navigation.navigate('Map'); 
-                                                navigation.navigate('Parking');
-                                            }
+                                            .then((res) => { return res.json(); })
+                                            .then(res => {
+                                                if (res.msg === '0') {
+                                                    navigation.navigate('Map');
+                                                    navigation.navigate('Parking');
+                                                }
 
-                                        })
-                                        .catch(err =>{
-                                            console.log(err);
+                                            })
+                                            .catch(err => {
+                                                console.log(err);
                                                 first_time = 1;
                                                 navigation.navigate('Parking');
-                                            
-                                        })
-                                        .finally(()=>{
 
-                                        });
-                                    }else{
+                                            })
+                                            .finally(() => {
+
+                                            });
+                                    } else {
                                         first_time = 1;
                                         log_out();
                                         navigation.navigate('LoginScreen');
@@ -265,7 +262,7 @@ const AddPrking = ({ }) => {
                                 }
                             }
                         />
-                        
+
                     </View>
                 </View>
                 <Text>
@@ -281,7 +278,7 @@ export default AddPrking;
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:22,
+        marginTop: 22,
         flex: 1,
         backgroundColor: "#FFF"
     },
@@ -330,8 +327,8 @@ const styles = StyleSheet.create({
     delete_profile_image: {
         backgroundColor: "#41444B",
         position: "absolute",
-        bottom : 20,
-        right : 0,
+        bottom: 20,
+        right: 0,
         width: 40,
         height: 40,
         borderRadius: 20,

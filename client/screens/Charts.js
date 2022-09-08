@@ -9,10 +9,10 @@ import {
 } from 'react-native-chart-kit';
 export default class Charts extends React.Component {
     state = {
-        firstTime : 0 ,
+        firstTime: 0,
         parking: {
-            free_history_id: ["0","0"] ,
-            free_history_free : [0,0],
+            free_history_id: ["0", "0"],
+            free_history_free: [0, 0],
             spots: 0,
             title: "",
             total: 0,
@@ -44,7 +44,7 @@ export default class Charts extends React.Component {
                     .then(res => {
                         //console.log(res.parking.free_history)
                         this.setState({ parking: res.parking })
-                        this.setState ({firstTime : 1}); 
+                        this.setState({ firstTime: 1 });
                     }).catch(err => {
 
                         console.log(err)
@@ -59,39 +59,39 @@ export default class Charts extends React.Component {
     render() {
         this.at_start_up();
         this.props.navigation.addListener('focus', async () => {
-            this.setState ({firstTime : 0});
-            });
+            this.setState({ firstTime: 0 });
+        });
         return (
             <ScrollView>
 
                 <View style={styles.container}>
                     <View>
-                    <View style={styles.titleBar}>
-                    <Ionicons name="ios-arrow-back" style={{
-                            }}size={24} color="#52575D"
-                        onPress={() => { this.props.navigation.goBack(); }}
-                    ></Ionicons>
-                    </View>
+                        <View style={styles.titleBar}>
+                            <Ionicons name="ios-arrow-back" style={{
+                            }} size={24} color="#52575D"
+                                onPress={() => { this.props.navigation.goBack(); }}
+                            ></Ionicons>
+                        </View>
                         <Text
                             style={{
                                 textAlign: 'center',
                                 fontSize: 18,
                                 padding: 16,
                             }}>
-                            { this.state.parking.title}
-                            { " :\n\n Taux d'occupation :" }
+                            {this.state.parking.title}
+                            {" :\n\n Taux d'occupation :"}
                         </Text>
                         <PieChart data={[
                             {
                                 name: '\n % ',
-                                occupation: this.state.parking.pourcentage_occuped ,
+                                occupation: this.state.parking.pourcentage_occuped,
                                 color: '#f51818',
                                 legendFontColor: '#050505',
                                 legendFontSize: 15,
                             },
                             {
                                 name: '%',
-                                occupation: 100 - this.state.parking.pourcentage_occuped ,
+                                occupation: 100 - this.state.parking.pourcentage_occuped,
                                 color: '#62f518',
                                 legendFontColor: '#050505',
                                 legendFontSize: 15,
@@ -120,15 +120,15 @@ export default class Charts extends React.Component {
                     </View>
                 </View>
                 <View style={styles.container}>
-                <Text
-                            style={{
-                                textAlign: 'center',
-                                fontSize: 18,
-                                padding: 16,
-                                marginTop: 16,
-                            }}>
-                            { "Places disponibles en fonction du temps  " }
-                        </Text>
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontSize: 18,
+                            padding: 16,
+                            marginTop: 16,
+                        }}>
+                        {"Places disponibles en fonction du temps  "}
+                    </Text>
                     <View>
                         <LineChart data={{
                             labels: this.state.parking.free_history_id,
@@ -137,13 +137,13 @@ export default class Charts extends React.Component {
                                     data: this.state.parking.free_history_free,
                                     strokeWidth: 1,
                                     withDots: false
-                                    
+
                                 },
                             ],
                             legend: ["places disponibles"] // optional
 
                         }}
-                            
+
                             width={Dimensions.get('window').width - 16}
                             height={220}
                             chartConfig={{
@@ -159,7 +159,7 @@ export default class Charts extends React.Component {
                                 marginVertical: 8,
                                 borderRadius: 16,
                             }}
-                        bezier
+                            bezier
                         />
                     </View>
                 </View>

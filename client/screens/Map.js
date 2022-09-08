@@ -1,4 +1,4 @@
-import React, {  Component } from "react";
+import React, { Component } from "react";
 import {
   Text,
   StyleSheet,
@@ -20,7 +20,7 @@ import * as SecureStore from 'expo-secure-store';
 
 
 import * as theme from "../theme";
-async function log_out(){
+async function log_out() {
   await SecureStore.deleteItemAsync('token');
 }
 
@@ -29,23 +29,23 @@ const { height, width } = Dimensions.get("screen");
 
 
 class ParkingMap extends Component {
-    ws = {}
-    firstTime =0 ; 
-    refreshTime = 0 ; 
-    state = {
+  ws = {}
+  firstTime = 0;
+  refreshTime = 0;
+  state = {
     hours: {},
-    Location:{    
+    Location: {
       latitude: 44.80591232649438,
-      longitude:  -0.6054219633020543
+      longitude: -0.6054219633020543
     },
-    parking : [],
+    parking: [],
     active: null,
-    parkingsSpots : [],
+    parkingsSpots: [],
     activeModal: null
   };
 
   UNSAFE_componentWillMount() {
-    
+
     const { parkings } = this.props;
     const hours = {};
 
@@ -71,39 +71,41 @@ class ParkingMap extends Component {
           <Text style={styles.headerLocation}>Bordeaux-INP, FR</Text>
         </View>
         <TouchableWithoutFeedback >
-        <Ionicons name="ios-stats-chart-sharp"  style={ {marginRight: 15, marginTop : 13} } size={theme.SIZES.icon * 2 } 
-          onPress={() => {
-            this.props.navigation.navigate('Statistics');
-            
-          }
-            }        
-        />
-       </TouchableWithoutFeedback>
+          <Ionicons name="ios-stats-chart-sharp" style={{ marginRight: 15, marginTop: 13 }} size={theme.SIZES.icon * 2}
+            onPress={() => {
+              this.props.navigation.navigate('Statistics');
+
+            }
+            }
+          />
+        </TouchableWithoutFeedback>
         <TouchableWithoutFeedback >
-        <Ionicons name="ios-people-sharp"  style={ {marginRight: 15, marginTop : 13} } size={theme.SIZES.icon * 2 } 
-          onPress={() => {
-            this.props.navigation.navigate('User');
-            
-          }
-            }        
-        />
-       </TouchableWithoutFeedback>
+          <Ionicons name="ios-people-sharp" style={{ marginRight: 15, marginTop: 13 }} size={theme.SIZES.icon * 2}
+            onPress={() => {
+              this.props.navigation.navigate('User');
+
+            }
+            }
+          />
+        </TouchableWithoutFeedback>
         <TouchableWithoutFeedback >
-        <Ionicons name="create-outline"  style={ {marginRight: 15, marginTop : 13} } size={theme.SIZES.icon * 2 } 
-          onPress={() => {
-            this.props.navigation.navigate('Parking');
-            
-          }
-            }        
-        />
-       </TouchableWithoutFeedback>
-       <TouchableWithoutFeedback>
-        <Ionicons name="ios-log-out"  style={ { marginTop : 13} } size={theme.SIZES.icon * 2} 
-          onPress={() => {log_out()
-          this.props.navigation.navigate('LoginScreen')}
-          }
-        />
-       </TouchableWithoutFeedback>
+          <Ionicons name="create-outline" style={{ marginRight: 15, marginTop: 13 }} size={theme.SIZES.icon * 2}
+            onPress={() => {
+              this.props.navigation.navigate('Parking');
+
+            }
+            }
+          />
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback>
+          <Ionicons name="ios-log-out" style={{ marginTop: 13 }} size={theme.SIZES.icon * 2}
+            onPress={() => {
+              log_out()
+              this.props.navigation.navigate('LoginScreen')
+            }
+            }
+          />
+        </TouchableWithoutFeedback>
 
       </View>
     );
@@ -118,9 +120,9 @@ class ParkingMap extends Component {
         <View style={[styles.parking, styles.shadow]}>
           <View style={styles.hours}>
             <Text style={styles.hoursTitle}>
-               {"Nom : "+item.title}{"\n"}
-               {"Disponibilité : "}{item.free + " places\n"} 
-               {"Type : "} {item.type}
+              {"Nom : " + item.title}{"\n"}
+              {"Disponibilité : "}{item.free + " places\n"}
+              {"Type : "} {item.type}
             </Text>
           </View>
           <View style={styles.parkingInfoContainer}>
@@ -199,7 +201,7 @@ class ParkingMap extends Component {
         onBackButtonPress={() => this.setState({ activeModal: null })}
         onBackdropPress={() => this.setState({ activeModal: null })}
         onSwipeComplete={() => this.setState({ activeModal: null })}
-        
+
       >
         <View style={styles.modal}>
           <View>
@@ -214,7 +216,7 @@ class ParkingMap extends Component {
                 fontSize: theme.SIZES.font * 1.1
               }}
             >
-              {activeModal.description+"\n"}
+              {activeModal.description + "\n"}
             </Text>
           </View>
           <View style={styles.modalInfo}>
@@ -225,12 +227,12 @@ class ParkingMap extends Component {
 
               <Text style={{ fontSize: theme.SIZES.icon * 1.15 }}>
                 {" "}
-                {"Type : "+activeModal.type}
+                {"Type : " + activeModal.type}
 
               </Text>
             </View>
           </View>
-         <View style={styles.modalInfo}>
+          <View style={styles.modalInfo}>
 
             <View
               style={[styles.parkingIcon, { justifyContent: "flex-start" }]}
@@ -263,11 +265,11 @@ class ParkingMap extends Component {
       date_json.hours = date.getHours();
       date_json.year = date.getFullYear();
       date_json.month = date.getMonth() + 1;
-      date_json.day = date.getDate(); 
-      date = null ;
+      date_json.day = date.getDate();
+      date = null;
 
-      let data = 'token=' + token + '&_id='+item._id+'&secondes='+''+date_json.secondes+'&minutes='+date_json.minutes+'&hours='+date_json.hours+'&year='+date_json.year
-      +'&month='+date_json.month+'&day='+date_json.day+'&free='+item.free;
+      let data = 'token=' + token + '&_id=' + item._id + '&secondes=' + '' + date_json.secondes + '&minutes=' + date_json.minutes + '&hours=' + date_json.hours + '&year=' + date_json.year
+        + '&month=' + date_json.month + '&day=' + date_json.day + '&free=' + item.free;
       let linkLoc = 'http://' + host_name + '/Parking/update/in';
       let reqLoc = {
         method: 'POST',
@@ -278,7 +280,7 @@ class ParkingMap extends Component {
       fetch(linkLoc, reqLoc)
         .then((res) => { return res.json(); })
         .then(res => {
-          console.log(res.msg )
+          console.log(res.msg)
         }).catch(err => {
 
           console.log(err)
@@ -288,56 +290,25 @@ class ParkingMap extends Component {
       log_out();
       this.props.navigation.navigate('LoginScreen');
     }
-  
-}
-send_history_out = async (item) => {
-  let token = await SecureStore.getItemAsync('token');
-  if (token) {
-    //
-    host_name = await ip_server.get_hostname();
-    var date = new Date();
-    var date_json = {};
-    date_json.secondes = date.getSeconds();
-    date_json.minutes = date.getMinutes();
-    date_json.hours = date.getHours();
-    date_json.year = date.getFullYear();
-    date_json.month = date.getMonth() + 1;
-    date_json.day = date.getDate(); 
-    date = null ;
-    let data = 'token=' + token + '&_id='+item._id+'&secondes='+''+date_json.secondes+'&minutes='+date_json.minutes+'&hours='+date_json.hours+'&year='+date_json.year
-    +'&month='+date_json.month+'&day='+date_json.day+'&free='+item.free;
-    let linkLoc = 'http://' + host_name + '/Parking/update/out';
-    let reqLoc = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },// this line is important, if this content-type is not set it wont work
-      body: data
 
-    };
-    fetch(linkLoc, reqLoc)
-      .then((res) => { return res.json(); })
-      .then(res => {
-        console.log(res.msg )
-      }).catch(err => {
-
-        console.log(err)
-
-      });
-  } else {
-    log_out();
-    this.props.navigation.navigate('LoginScreen');
   }
-
-}
-  at_start_up = async () => {
+  send_history_out = async (item) => {
     let token = await SecureStore.getItemAsync('token');
-    if (this.firstTime == 0 )
-    {
     if (token) {
       //
       host_name = await ip_server.get_hostname();
-
-      let data = 'token=' + token;
-      let linkLoc = 'http://' + host_name + '/Parking/get';
+      var date = new Date();
+      var date_json = {};
+      date_json.secondes = date.getSeconds();
+      date_json.minutes = date.getMinutes();
+      date_json.hours = date.getHours();
+      date_json.year = date.getFullYear();
+      date_json.month = date.getMonth() + 1;
+      date_json.day = date.getDate();
+      date = null;
+      let data = 'token=' + token + '&_id=' + item._id + '&secondes=' + '' + date_json.secondes + '&minutes=' + date_json.minutes + '&hours=' + date_json.hours + '&year=' + date_json.year
+        + '&month=' + date_json.month + '&day=' + date_json.day + '&free=' + item.free;
+      let linkLoc = 'http://' + host_name + '/Parking/update/out';
       let reqLoc = {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },// this line is important, if this content-type is not set it wont work
@@ -347,9 +318,7 @@ send_history_out = async (item) => {
       fetch(linkLoc, reqLoc)
         .then((res) => { return res.json(); })
         .then(res => {
-          //console.log(res.parking )
-          this.setState({parkingsSpots : res.parking} )
-          this.firstTime = 1 ;
+          console.log(res.msg)
         }).catch(err => {
 
           console.log(err)
@@ -359,183 +328,215 @@ send_history_out = async (item) => {
       log_out();
       this.props.navigation.navigate('LoginScreen');
     }
+
   }
-}
-  get_current_location = async () => { 
+  at_start_up = async () => {
     let token = await SecureStore.getItemAsync('token');
-    const {status} = await Location.requestForegroundPermissionsAsync();
-    const granted = await PermissionsAndroid.check( PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION );
-    if (token) {
-    if ( granted )
-    {
-    //console.log("aaaaaaaaaa")
-    let location = await Location.getCurrentPositionAsync({}); 
-    let tmp_loc  =  {}
-    tmp_loc.latitude = location.coords.latitude;
-    tmp_loc.longitude = location.coords.longitude; 
-    this.setState({ Location : tmp_loc })
-    //console.log(this.state.Location)
+    if (this.firstTime == 0) {
+      if (token) {
+        //
+        host_name = await ip_server.get_hostname();
+
+        let data = 'token=' + token;
+        let linkLoc = 'http://' + host_name + '/Parking/get';
+        let reqLoc = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },// this line is important, if this content-type is not set it wont work
+          body: data
+
+        };
+        fetch(linkLoc, reqLoc)
+          .then((res) => { return res.json(); })
+          .then(res => {
+            //console.log(res.parking )
+            this.setState({ parkingsSpots: res.parking })
+            this.firstTime = 1;
+          }).catch(err => {
+
+            console.log(err)
+
+          });
+      } else {
+        log_out();
+        this.props.navigation.navigate('LoginScreen');
+      }
     }
+  }
+  get_current_location = async () => {
+    let token = await SecureStore.getItemAsync('token');
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+    if (token) {
+      if (granted) {
+        //console.log("aaaaaaaaaa")
+        let location = await Location.getCurrentPositionAsync({});
+        let tmp_loc = {}
+        tmp_loc.latitude = location.coords.latitude;
+        tmp_loc.longitude = location.coords.longitude;
+        this.setState({ Location: tmp_loc })
+        //console.log(this.state.Location)
+      }
     }
     else {
       log_out();
       this.propsnavigation.navigate('LoginScreen');
     }
-   }
-  onSendIncrement (item) {
+  }
+  onSendIncrement(item) {
     free = parseInt(item.free)
-    item.free = free + 1 ; 
+    item.free = free + 1;
     this.update(item);
     this.send_history_out(item);
     this.ws.current.send(JSON.stringify(item));
   }
-  onSendDecrement ( item ) {
+  onSendDecrement(item) {
     free = parseInt(item.free)
-    item.free = free - 1 ; 
+    item.free = free - 1;
     this.update(item);
     this.send_history_in(item);
     this.ws.current.send(JSON.stringify(item));
   }
-   refresh = async () => { 
+  refresh = async () => {
 
     this.props.navigation.addListener('focus', async () => {
-    this.firstTime = 0 ; 
-    if (this.firstTime == 0 )
-    {
-      this.at_start_up(); 
-      
-      console.log("initiateSocketConnection")
-      // enter your websocket url
-      let host_name = await ip_server.get_hostname();
-      let hots_and_port = host_name.split(':');
-      let just_host_name  = hots_and_port[0];
-      this.ws.current = new WebSocket('ws://'+ just_host_name +':3333/');
-      this.ws.current.onopen = () => {
-        console.log("connection establish open")
-     };
-      this.ws.current.onclose = () => {
-        console.log("connection establish closed");
-      }
-      tmp_parking = {};
-      this.ws.current.onmessage = e => {
-        const response = JSON.parse(e.data);
-        //console.log("onmessage=>", JSON.stringify(response));
-        for (var i = 0; i < this.state.parkingsSpots.length; i++) { 
-          if (this.state.parkingsSpots[i]._id === response._id)
-          { 
-            
-            this.state.parkingsSpots[i].free = response.free ;
-            this.setState ( { parkingsSpots : this.state.parkingsSpots } )
+      this.firstTime = 0;
+      if (this.firstTime == 0) {
+        this.at_start_up();
+
+        console.log("initiateSocketConnection")
+        // enter your websocket url
+        let host_name = await ip_server.get_hostname();
+        let hots_and_port = host_name.split(':');
+        let just_host_name = hots_and_port[0];
+        this.ws.current = new WebSocket('ws://' + just_host_name + ':3333/');
+        this.ws.current.onopen = () => {
+          console.log("connection establish open")
+        };
+        this.ws.current.onclose = () => {
+          console.log("connection establish closed");
+        }
+        tmp_parking = {};
+        this.ws.current.onmessage = e => {
+          const response = JSON.parse(e.data);
+          //console.log("onmessage=>", JSON.stringify(response));
+          for (var i = 0; i < this.state.parkingsSpots.length; i++) {
+            if (this.state.parkingsSpots[i]._id === response._id) {
+
+              this.state.parkingsSpots[i].free = response.free;
+              this.setState({ parkingsSpots: this.state.parkingsSpots })
+            }
           }
+
+
+
+        }
+        return () => {
+          this.ws.current.close();
+        };
       }
-      
-        
-      
-      }
-      return () => {
-        this.ws.current.close();
-      };
-    }    
-  });
-   }
-   update = async (item  ) => { 
+    });
+  }
+  update = async (item) => {
     let host_name = await ip_server.get_hostname();
-    let link = 'http://'+host_name+'/Parking/update';
+    let link = 'http://' + host_name + '/Parking/update';
     let token = await SecureStore.getItemAsync('token');
 
-    let data = 'token='+token+ '&id='+item._id +'&name='+item.title+'&Lat='+item.coordinate.latitude+'&Long='+item.coordinate.longitude+ '&capacite='+item.spots 
-    +'&description='+item.description + '&free=' + item.free ;
+    let data = 'token=' + token + '&id=' + item._id + '&name=' + item.title + '&Lat=' + item.coordinate.latitude + '&Long=' + item.coordinate.longitude + '&capacite=' + item.spots
+      + '&description=' + item.description + '&free=' + item.free;
 
     //console.log(data);
 
     let myInit = {
-        method: 'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
-        body: data
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // this line is important, if this content-type is not set it wont work
+      body: data
     };
 
     fetch(link, myInit)
-    .then((res)=>{return res.json();})
-    .then(res =>{
-        if(res.msg === '0'){
-            //console.log("success"); 
-        }else{
-            //setErrorMsg(res.msg);
+      .then((res) => { return res.json(); })
+      .then(res => {
+        if (res.msg === '0') {
+          //console.log("success"); 
+        } else {
+          //setErrorMsg(res.msg);
         }
 
-    })
-    .catch(err =>{
+      })
+      .catch(err => {
         console.log(err);
-            first_time = 1;
-            navigation.navigate('Parking');
-        
-    })
-    .finally(()=>{
+        first_time = 1;
+        navigation.navigate('Parking');
 
-    });
-   }
-   render() {
-    if (this.refreshTime==0)
-    { this.refresh();
-      this.refreshTime = 1 ;  
+      })
+      .finally(() => {
+
+      });
+  }
+  render() {
+    if (this.refreshTime == 0) {
+      this.refresh();
+      this.refreshTime = 1;
       //this.get_current_location();
 
     }
 
-    const  currentPosition  = this.props.currentPosition;
+    const currentPosition = this.props.currentPosition;
     const parkings = this.state.parkingsSpots
-    let token = SecureStore.getItemAsync('token'); 
-    if (token){
+    let token = SecureStore.getItemAsync('token');
+    if (token) {
 
-    return (
-      <View style={styles.container}>
-        {this.renderHeader()}
-        <MapView initialRegion={currentPosition} style={styles.map}
-        mapType = "hybrid"
-        showsUserLocation
-        followsUserLocation
-        showsTraffic
-        showsIndoors
-        showsIndoorLevelPicker
-        showsMyLocationButton
+      return (
+        <View style={styles.container}>
+          {this.renderHeader()}
+          <MapView initialRegion={currentPosition} style={styles.map}
+            mapType="hybrid"
+            showsUserLocation
+            followsUserLocation
+            showsTraffic
+            showsIndoors
+            showsIndoorLevelPicker
+            showsMyLocationButton
 
-        >
-          {this.state.parkingsSpots.map(parking => (
-            <Marker
-              key={`marker-${parking.id}`}
-              coordinate={parking.coordinate}
-              onPress={() => {this.setState({ active: parking.id }) ; 
-              //console.log([parking]) ;
-              this.setState({ parking: [parking] }) }  }
-              icon={{width: 260, height: 280}}
+          >
+            {this.state.parkingsSpots.map(parking => (
+              <Marker
+                key={`marker-${parking.id}`}
+                coordinate={parking.coordinate}
+                onPress={() => {
+                  this.setState({ active: parking.id });
+                  //console.log([parking]) ;
+                  this.setState({ parking: [parking] })
+                }}
+                icon={{ width: 260, height: 280 }}
 
-            >
-
-              <TouchableWithoutFeedback
-                
               >
-                <View
+
+                <TouchableWithoutFeedback
 
                 >
-                  <Ionicons name = "ios-location"
-                    style={[
-                    this.state.active === parking.id ? styles.active : null
-                    ]}
-                    color="#7fff00"
-                    size={30}
-                  >
-                    
-                  </Ionicons>
-                </View>
-              </TouchableWithoutFeedback>
-            </Marker>
-          ))}
+                  <View
 
-        </MapView>
-        { this.state.active ? this.renderParkings():<></> }
-        { this.state.active ? this.renderModal() :<></>  }
-      </View>
-    );}
+                  >
+                    <Ionicons name="ios-location"
+                      style={[
+                        this.state.active === parking.id ? styles.active : null
+                      ]}
+                      color="#7fff00"
+                      size={30}
+                    >
+
+                    </Ionicons>
+                  </View>
+                </TouchableWithoutFeedback>
+              </Marker>
+            ))}
+
+          </MapView>
+          {this.state.active ? this.renderParkings() : <></>}
+          {this.state.active ? this.renderModal() : <></>}
+        </View>
+      );
+    }
     else {
       log_out();
       this.props.navigation.navigate('LoginScreen');
@@ -546,7 +547,7 @@ send_history_out = async (item) => {
 ParkingMap.defaultProps = {
   currentPosition: {
     latitude: 44.80591232649438,
-    longitude:  -0.6054219633020543,
+    longitude: -0.6054219633020543,
     latitudeDelta: 0.00522,
     longitudeDelta: 0.00521
   },
@@ -597,8 +598,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     marginLeft: theme.SIZES.base * 4,
-    paddingHorizontal: theme.SIZES.base ,
-    paddingVertical: theme.SIZES.base*0.5,
+    paddingHorizontal: theme.SIZES.base,
+    paddingVertical: theme.SIZES.base * 0.5,
     backgroundColor: theme.COLORS.red,
     borderRadius: 6
   },
@@ -643,13 +644,13 @@ const styles = StyleSheet.create({
   hours: {
     flex: 1,
     flexDirection: "column",
-    marginLeft: theme.SIZES.base ,
+    marginLeft: theme.SIZES.base,
     justifyContent: "space-evenly"
   },
   hoursTitle: {
     fontSize: theme.SIZES.text,
     fontWeight: "400",
-    marginRight:-50,
+    marginRight: -50,
 
   },
   hoursDropdown: {

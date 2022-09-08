@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -31,7 +31,7 @@ var serverPort_txt = '';
 
 var popup_first_time = true;
 
-const LoginScreen = ({}) => {
+const LoginScreen = ({ }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errorMsg, setErrorMsg] = useState('');
@@ -39,7 +39,7 @@ const LoginScreen = ({}) => {
   const [modalVisible, setModalVisible] = useState(true);
 
   const at_start_up = async () => {
-    if(popup_first_time){
+    if (popup_first_time) {
       popup_first_time = false;
       await ip_server.verify(setModalVisible, serverIp_txt, serverPort_txt);
     }
@@ -83,98 +83,98 @@ const LoginScreen = ({}) => {
       />
 
       <Text style={styles.error_msg}>
-        {errorMsg}  
+        {errorMsg}
       </Text>
 
       <FormButton
         buttonTitle="Sign In"
-        onPress = {async ()=>{
+        onPress={async () => {
 
           setErrorMsg('');
 
           let host_name = await ip_server.get_hostname();
-          let link = 'http://'+host_name+'/users/login';
+          let link = 'http://' + host_name + '/users/login';
 
 
-          let data = 'email='+email+'&password='+password;
+          let data = 'email=' + email + '&password=' + password;
 
           let myInit = {
             method: 'POST',
-            headers: {'Content-Type':'application/x-www-form-urlencoded'}, // this line is important, if this content-type is not set it wont work
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // this line is important, if this content-type is not set it wont work
             body: data
           };
 
           fetch(link, myInit)
-          .then((res)=>{return res.json();})
-          .then(res =>{
+            .then((res) => { return res.json(); })
+            .then(res => {
 
-            if(res.msg === '0'){
-              signup(res.token);
-              navigation.navigate('Map');
-            }else{
-              setErrorMsg(res.msg);
-            }
+              if (res.msg === '0') {
+                signup(res.token);
+                navigation.navigate('Map');
+              } else {
+                setErrorMsg(res.msg);
+              }
 
-          })
-          .catch(err =>{
+            })
+            .catch(err => {
               console.log(err);
-          });
+            });
 
         }}
       />
 
       <TouchableOpacity
         style={styles.forgotButton}
-        >
+      >
         <Text style={styles.navButtonText}
-         onPress={() => navigation.navigate('SignupScreen')}
-         >
+          onPress={() => navigation.navigate('SignupScreen')}
+        >
           Créer un compte
         </Text>
       </TouchableOpacity>
 
       <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={
-              () => {
-                   setModalVisible(true);
-              }
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={
+          () => {
+            setModalVisible(true);
           }
+        }
       >
         <View style={styles.popup}>
           <Text>
-              Can't find the server.
+            Can't find the server.
           </Text>
           <Text>
             Please Type ip and port :
           </Text>
           <TextInput
-            style={{height: 40}}
+            style={{ height: 40 }}
             placeholder="ip"
             onChangeText={newText => serverIp_txt = newText}
             defaultValue={serverIp_txt}
           />
           <TextInput
-            style={{height: 40}}
+            style={{ height: 40 }}
             placeholder="port"
             onChangeText={newText => serverPort_txt = newText}
             defaultValue={serverPort_txt}
           />
           <Button
-            title = 'Test DB connection'
+            title='Test DB connection'
             onPress={
-              ()=>{
+              () => {
                 setModalVisible(false);
                 ip_server.verify(setModalVisible, serverIp_txt, serverPort_txt);
               }
             }
           />
           <Button
-            title = 'delete registred ip and port'
+            title='delete registred ip and port'
             onPress={
-              ()=>{
+              () => {
                 ip_server.restart();
                 setModalVisible(false);
                 ip_server.verify(setModalVisible, serverIp_txt, serverPort_txt);
@@ -185,7 +185,7 @@ const LoginScreen = ({}) => {
 
         </View>
       </Modal>
-      
+
     </ScrollView>
   );
 };
@@ -220,8 +220,8 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#2e64e5',
   },
-  popup : {
-    top : 100,
+  popup: {
+    top: 100,
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -236,9 +236,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
-  error_msg : {
+  error_msg: {
     fontSize: 13,
-    fontWeight : 'bold',
-    color : 'red'
+    fontWeight: 'bold',
+    color: 'red'
   }
 });

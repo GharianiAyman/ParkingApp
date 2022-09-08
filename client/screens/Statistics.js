@@ -1,9 +1,9 @@
 import React from "react";
 import { useContext, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Button , ScrollView, TouchableOpacity} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Image, Button, ScrollView, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import FormButton from '../components/FormButton';
-import {Picker} from "@react-native-picker/picker";
+import { Picker } from "@react-native-picker/picker";
 import style from '../assets/styles';
 
 import { useFocusEffect } from '@react-navigation/native';
@@ -12,7 +12,7 @@ import * as ip_server from './server_ip';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 
-async function log_out(){
+async function log_out() {
     await SecureStore.deleteItemAsync('token');
 }
 
@@ -24,8 +24,8 @@ const Statistics = ({ }) => {
     const navigation = useNavigation();
     const [isFirstDatePickerVisible, setFirstDatePickerVisibility] = useState(false);
     const [isSecondDatePickerVisible, setSecondDatePickerVisibility] = useState(false);
-    const [FirstDate, setFirstDate] = useState(new Date () );
-    const [SecondDate, setSecondDate] = useState(new Date () );   
+    const [FirstDate, setFirstDate] = useState(new Date());
+    const [SecondDate, setSecondDate] = useState(new Date());
     const [index, setIndex] = useState('');
     const [first_time, setFirst_time] = useState(1);
     const [parking, setParking] = useState([]);
@@ -33,81 +33,81 @@ const Statistics = ({ }) => {
     const [saveButtonTitle, setSaveButtonTitle] = useState('Analyser');
     const [first_date_change, setfirst_date_change] = useState(0);
     const [second_date_change, setsecond_date_change] = useState(0);
-    var first_refresh = 0 ; 
+    var first_refresh = 0;
     const showFirstDatePicker = () => {
         setFirstDatePickerVisibility(true);
-      };
-    
-      const hideFirstDatePicker = () => {
+    };
+
+    const hideFirstDatePicker = () => {
         setFirstDatePickerVisibility(false);
-      };
-    
-      const handleFirstConfirm = (date) => {
+    };
+
+    const handleFirstConfirm = (date) => {
         setFirstDate(date)
         setfirst_date_change(1);
         //console.log("A date has been picked: ", FirstDate);
         hideFirstDatePicker();
-      };
-      const showSecondDatePicker = () => {
+    };
+    const showSecondDatePicker = () => {
         setSecondDatePickerVisibility(true);
-      };
-    
-      const hideSecondDatePicker = () => {
+    };
+
+    const hideSecondDatePicker = () => {
         setSecondDatePickerVisibility(false);
-      };
-    
-      const handleSecondConfirm = (date) => {
+    };
+
+    const handleSecondConfirm = (date) => {
         setSecondDate(date)
         setsecond_date_change(1)
         //console.log("A date has been picked: ", SecondDate);
         hideSecondDatePicker();
-      };
+    };
 
 
 
     const at_start_up = async () => {
 
-        if(first_time === 1){
+        if (first_time === 1) {
             let token = await SecureStore.getItemAsync('token');
             if (token) {
-              //
-              host_name = await ip_server.get_hostname();
-        
-              let data = 'token=' + token;
-              let linkLoc = 'http://' + host_name + '/Parking/get';
-              let reqLoc = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },// this line is important, if this content-type is not set it wont work
-                body: data
-        
-              };
-              fetch(linkLoc, reqLoc)
-                .then((res) => { return res.json(); })
-                .then(res => {
-                  //console.log(res.parking )
-                  setParking( res.parking )
-                  setFirst_time(0);
-                }).catch(err => {
-        
-                  console.log(err)
-        
-                });
+                //
+                host_name = await ip_server.get_hostname();
+
+                let data = 'token=' + token;
+                let linkLoc = 'http://' + host_name + '/Parking/get';
+                let reqLoc = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },// this line is important, if this content-type is not set it wont work
+                    body: data
+
+                };
+                fetch(linkLoc, reqLoc)
+                    .then((res) => { return res.json(); })
+                    .then(res => {
+                        //console.log(res.parking )
+                        setParking(res.parking)
+                        setFirst_time(0);
+                    }).catch(err => {
+
+                        console.log(err)
+
+                    });
             } else {
-              log_out();
-              this.propsnavigation.navigate('LoginScreen');
+                log_out();
+                this.propsnavigation.navigate('LoginScreen');
             }
-          }
-    
+        }
+
     }
 
     useFocusEffect(
         React.useCallback(() => {
             at_start_up();
 
-                navigation.addListener('focus', async () => {
+            navigation.addListener('focus', async () => {
                 setFirst_time(1);
-                });
-            
+            });
+
 
 
         })
@@ -116,9 +116,9 @@ const Statistics = ({ }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={style.top}>
-                <Text style={style.title}>Statistiques</Text>
-                    </View>
+                <View style={style.top}>
+                    <Text style={style.title}>Statistiques</Text>
+                </View>
                 <Text style={[styles.subText, styles.recent]}>Nom du parking</Text>
                 <View style={{ alignItems: "center" }}>
                     <View style={styles.infoContainer}>
@@ -131,9 +131,9 @@ const Statistics = ({ }) => {
                                 }
                             }
                         >
-                        {Object.keys(parking).map((key) => {
-                            return (<Picker.Item label={parking[key].title} value={parking[key]._id} key={key}/>) //if you have a bunch of keys value pair
-                        })}
+                            {Object.keys(parking).map((key) => {
+                                return (<Picker.Item label={parking[key].title} value={parking[key]._id} key={key} />) //if you have a bunch of keys value pair
+                            })}
                         </Picker>
                     </View>
                 </View>
@@ -145,7 +145,7 @@ const Statistics = ({ }) => {
                         mode="datetime"
                         onConfirm={handleFirstConfirm}
                         onCancel={hideFirstDatePicker}
-                        
+
                     />
                 </View>
                 <Text style={[styles.subText, styles.recent]}>deuxième date</Text>
@@ -158,73 +158,73 @@ const Statistics = ({ }) => {
                         onCancel={hideSecondDatePicker}
                     />
                 </View>
-                <Text style={{textAlign : 'center', color : 'red'}}>
+                <Text style={{ textAlign: 'center', color: 'red' }}>
                     {checkMsg}
                 </Text>
                 <View style={{ alignItems: "center" }}>
                     <View style={styles.infoContainer}>
                         <FormButton
                             buttonTitle={saveButtonTitle}
-                            onPress = {
-                                async ()=>{
-                                    var current_date = new Date() ; 
+                            onPress={
+                                async () => {
+                                    var current_date = new Date();
                                     //current_date.toISOString
                                     if (!index.trim()) {
 
                                         setCheckMsg('Set all information');
-                                        
+
                                         return;
-                                  
-                                      }
-                                      if ( FirstDate.getTime() > SecondDate.getTime() ) {
+
+                                    }
+                                    if (FirstDate.getTime() > SecondDate.getTime()) {
 
                                         setCheckMsg('second date must be bigger then first');
-                                        
+
                                         return;
-                                  
-                                      }
-                                      if ( first_date_change == 0 || second_date_change == 0 ) {
+
+                                    }
+                                    if (first_date_change == 0 || second_date_change == 0) {
 
                                         setCheckMsg('set all informations');
-                                        
+
                                         return;
-                                  
-                                      }
-                                      if ( FirstDate.getTime() > current_date.getTime() || SecondDate.getTime() > current_date.getTime()  ) {
+
+                                    }
+                                    if (FirstDate.getTime() > current_date.getTime() || SecondDate.getTime() > current_date.getTime()) {
 
                                         setCheckMsg('date must be lower then current date');
-                                        
+
                                         return;
-                                  
-                                      }
+
+                                    }
                                     setCheckMsg("")
                                     setFirst_time(1);
                                     let token = await SecureStore.getItemAsync('token');
                                     if (token) {
                                         setfirst_date_change(1);
-                                        setsecond_date_change(1); 
+                                        setsecond_date_change(1);
                                         var first_date_json = {};
                                         first_date_json.secondes = current_date.getSeconds();
                                         first_date_json.minutes = current_date.getMinutes();
                                         first_date_json.hours = current_date.getHours();
                                         first_date_json.year = FirstDate.getFullYear();
                                         first_date_json.month = FirstDate.getMonth() + 1;
-                                        first_date_json.day = FirstDate.getDate(); 
+                                        first_date_json.day = FirstDate.getDate();
                                         var second_date_json = {};
                                         second_date_json.secondes = current_date.getSeconds();
                                         second_date_json.minutes = current_date.getMinutes();
                                         second_date_json.hours = current_date.getHours();
                                         second_date_json.year = SecondDate.getFullYear();
                                         second_date_json.month = SecondDate.getMonth() + 1;
-                                        second_date_json.day = SecondDate.getDate(); 
+                                        second_date_json.day = SecondDate.getDate();
                                         setFirst_time(1);
-                                        navigation.navigate("Charts" , { index , first_date_json, second_date_json }); 
+                                        navigation.navigate("Charts", { index, first_date_json, second_date_json });
                                         //console.log(current_date);
                                         //console.log(FirstDate);
                                         //console.log(SecondDate); 
 
 
-                                    }else{
+                                    } else {
                                         setFirst_time(1);
                                         log_out();
                                         navigation.navigate('LoginScreen');
@@ -233,7 +233,7 @@ const Statistics = ({ }) => {
                                 }
                             }
                         />
-                        
+
                     </View>
                 </View>
                 <Text>
@@ -249,7 +249,7 @@ export default Statistics;
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:0,
+        marginTop: 0,
         flex: 1,
         backgroundColor: "#FFF"
     },
@@ -298,8 +298,8 @@ const styles = StyleSheet.create({
     delete_profile_image: {
         backgroundColor: "#41444B",
         position: "absolute",
-        bottom : 20,
-        right : 0,
+        bottom: 20,
+        right: 0,
         width: 40,
         height: 40,
         borderRadius: 20,
